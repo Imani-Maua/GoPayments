@@ -1,0 +1,9 @@
+gopayments
+*.exe
+
+vendor/
+
+.env
+
+.vscode/
+.idea/
