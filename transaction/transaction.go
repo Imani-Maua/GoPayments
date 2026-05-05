@@ -10,6 +10,15 @@ type Transaction struct{
 	Amount float64
 }
 
+func NewTransaction(id, name string, amount float64) Transaction{
+	return Transaction{
+		ID: id,
+		Name: name,
+		Amount: amount,
+		Status: "pending",
+	}
+}
+
 func (payment Transaction) Validate() error{
 	if payment.Name == ""{
 		return errors.New("invalid transaction: name is empty.")
