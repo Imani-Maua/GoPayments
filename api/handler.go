@@ -11,15 +11,21 @@ import (
 func ProcessPayment(c *gin.Context){
 	// step 1: read the JSON body into a struct
 
-	var payment transaction.Transaction
-	if err := c.ShouldBindJSON(&payment); err != nil {
+	var body struct {
+		Name string
+		Amount float64
+	}
+	if err := c.ShouldBindJSON(&body); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
+
+	payment := transaction.NewTransaction(body.Name, body.Amount)
     // step 2: validate the transaction
 	validate := payment.Validate()
 	if validate != nil {
 		fmt.Println("Valdiation failed:", validate)
+		return
 	}else {
 		fmt.Println("Validation passed!")
 	}
@@ -33,7 +39,12 @@ func ProcessPayment(c *gin.Context){
     // step 5: return a JSON response
 	c.JSON(http.StatusOK, gin.H{
 		"message": "payment processed successfully",
-		"transaction": payment.Summary(),
+		"transaction": gin.H{
+			"id": payment.ID,
+			"name": payment.Name,
+			"amount": payment.Amount,
+			"status": payment.Status,
+		},
 	})
 
 }
