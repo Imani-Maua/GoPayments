@@ -1,11 +1,18 @@
 package main
 
 import (
-	"fmt"
+	"gopayments/api"
+	"github.com/gin-gonic/gin"
 )
 
 
 
 func main() {
-	fmt.Println(("Process a payment!"))
+	r := gin.Default()
+
+	r.POST("/payment", api.ProcessPayment)
+
+	r.Run(":8080")
+
 }
+
