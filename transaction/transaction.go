@@ -3,6 +3,7 @@ package transaction
 import (
 	"errors"
 	"fmt"
+	"time"
 )
 
 type Transaction struct{
@@ -10,7 +11,8 @@ type Transaction struct{
 	Amount float64
 }
 
-func NewTransaction(id, name string, amount float64) Transaction{
+func NewTransaction(name string, amount float64) Transaction{
+	id := fmt.Sprintf("TX-%d",time.Now().UnixNano())
 	return Transaction{
 		ID: id,
 		Name: name,
@@ -36,7 +38,7 @@ func (payment *Transaction) Process(){
 }
 
 func (payment Transaction) Summary() string{
-	return fmt.Sprintf("ID: %s\nName: %s\nAmount: %.2f\nStatus: %s", 
+	return fmt.Sprintf("ID: %s \nName: %s \nAmount: %.2f \nStatus: %s", 
 	payment.ID, payment.Name, payment.Amount, payment.Status)	
 }
 
